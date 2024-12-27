@@ -16,6 +16,7 @@ type BloomFilter struct {
 }
 
 type Filter struct {
+	name      string
 	rate      float64                                // 误判率
 	capacity  int64                                  // 预计容量
 	size      int64                                  // bit数组长度
@@ -49,6 +50,7 @@ func (bf *BloomFilter) NewFilter(ctx context.Context, name string, rate float64,
 		hashFuncs[i] = utils.CreateHash(size)
 	}
 	filter := &Filter{
+		name:      name,
 		rate:      rate,
 		capacity:  capacity,
 		size:      size,

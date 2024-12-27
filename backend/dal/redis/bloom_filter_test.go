@@ -10,7 +10,7 @@ import (
 func TestNewBloomFilter(t *testing.T) {
 	conf.TestInit()
 	Init(context.Background(), conf.GetRedis())
-	
+
 	NewBloomFilter().NewFilter(context.Background(), consts.ShortURLBloomFilterName, consts.ShortURLBloomFilterRate, consts.ShortURLBloomFilterCap)
 	t.Logf("bloom filter created, %#v", NewBloomFilter().filters[consts.ShortURLBloomFilterName])
 	NewBloomFilter().AddElement(context.Background(), consts.ShortURLBloomFilterName, "test")
