@@ -1,0 +1,26 @@
+# 服务器配置
+server:
+  port: ":29090"
+  name: "url_shorten"
+
+# 日志配置
+logger:
+  log_path: "./logs/system"
+  log_level: "debug"
+
+# redis
+redis:
+  addr: 127.0.0.1:6379
+  username: 
+  password: REDIS_PASSWORD
+
+# mysql
+mysql:
+  addr: 127.0.0.1:3306
+  username: root
+  password: MYSQL_PASSWORD
+  database: url_shorten
+
+url_shorten:
+  prefix: "http://localhost:29090"
+  expire: 720
