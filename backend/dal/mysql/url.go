@@ -11,7 +11,7 @@ import (
 )
 
 type ShortURL struct {
-	ID         uint      `gorm:"primary_key;auto_increment" json:"id"`
+	ID         uint64      `gorm:"primary_key;auto_increment" json:"id"`
 	OriginURL  string    `gorm:"type:text;not null" json:"origin_url"`
 	Code       string    `gorm:"type:varchar(255);not null" json:"code"`
 	ExpireTime time.Time `gorm:"type:datetime;not null" json:"expire_time"`

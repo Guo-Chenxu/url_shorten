@@ -20,9 +20,11 @@ const (
 	codeLength = 6
 )
 
+var worker, _ = utils.NewSnowFlakeWorker(0)
+
 func CreateShortURL(ctx context.Context, req *url_shorten.CreateShortUrlReq) (*url_shorten.CreateShortUrlResp, *consts.BizCode) {
-	code := getCode(ctx)
-	if code == "" {
+	id, code, err := getIdAndCode()
+	if err != nil {
 		return nil, &consts.SystemErr
 	}
 	if req.ExpireTime <= 0 {
@@ -30,6 +32,7 @@ func CreateShortURL(ctx context.Context, req *url_shorten.CreateShortUrlReq) (*u
 	}
 
 	shortURL := &mysql.ShortURL{
+		ID:         id,
 		OriginURL:  req.OriginURL,
 		Code:       code,
 		ExpireTime: time.Now().Add(time.Duration(req.ExpireTime) * time.Hour),
@@ -76,7 +79,7 @@ func Query(ctx context.Context, req *url_shorten.QueryReq) (*mysql.ShortURL, *co
 	return nil, &consts.ParamError
 }
 
-func getCode(ctx context.Context) string {
+func getCodeWithRandom(ctx context.Context) string {
 	now := time.Now()
 	for i := 0; i < retryTimes; i++ {
 		code := utils.GenerateCode(codeLength)
@@ -88,6 +91,15 @@ func getCode(ctx context.Context) string {
 		}
 	}
 	return ""
+}
+
+func getIdAndCode() (uint64, string, error) {
+	id, err := worker.GenerateId()
+	if err != nil {
+		return 0, "", err
+	}
+	code := utils.EncodeBase62Uint64(id)
+	return id, code, nil
 }
 
 func cacheShortURL(ctx context.Context, shortURL *mysql.ShortURL) {
