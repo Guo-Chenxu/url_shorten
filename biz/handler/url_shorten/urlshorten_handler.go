@@ -34,7 +34,7 @@ func CreateShortURL(ctx context.Context, c *app.RequestContext) {
 }
 
 // Query .
-// @router /:code [GET]
+// @router /s/:code [GET]
 func Query(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req url_shorten.QueryReq

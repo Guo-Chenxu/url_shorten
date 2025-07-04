@@ -22,5 +22,5 @@ struct QueryReq {
 
 service URLShortenHandler {
     CreateShortUrlResp CreateShortURL(1: CreateShortUrlReq req) (api.post="/api/create")
-    BaseResp Query(1: QueryReq req) (api.get="/:code")
+    BaseResp Query(1: QueryReq req) (api.get="/s/:code")
 }

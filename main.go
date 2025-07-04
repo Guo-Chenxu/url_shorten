@@ -7,9 +7,10 @@ import (
 	handler "url_shorten/biz/handler"
 	"url_shorten/conf"
 	"url_shorten/consts"
-	"url_shorten/dal"
-	"url_shorten/dal/redis"
+	// "url_shorten/dal"
+	// "url_shorten/dal/redis"
 	"url_shorten/logger"
+	"url_shorten/web"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -21,10 +22,11 @@ import (
 func main() {
 	conf.InitConfig()
 	logger.Init(conf.GetLogger())
-	dal.Init()
-	redis.NewBloomFilter().NewFilter(context.Background(), consts.ShortURLBloomFilterName, consts.ShortURLBloomFilterRate, consts.ShortURLBloomFilterCap)
+	// dal.Init()
+	// redis.NewBloomFilter().NewFilter(context.Background(), consts.ShortURLBloomFilterName, consts.ShortURLBloomFilterRate, consts.ShortURLBloomFilterCap)
 
 	h := server.Default(server.WithHostPorts(conf.GetConfig().Server.Port))
+	web.InitWebRouter(h, "web")
 	h.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "HEAD", "OPTIONS"},
@@ -34,7 +36,9 @@ func main() {
 			return true
 		}}),
 		recovery.Recovery(recovery.WithRecoveryHandler(RecoveryHandler)))
+
 	register(h)
+
 	h.Spin()
 }
 

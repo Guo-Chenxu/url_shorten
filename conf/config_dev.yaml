@@ -22,5 +22,5 @@ mysql:
   database: url_shorten
 
 url_shorten:
-  prefix: "http://localhost:29090"
+  prefix: "http://localhost:29090/s"
   expire: 720

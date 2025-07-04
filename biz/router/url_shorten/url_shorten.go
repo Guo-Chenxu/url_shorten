@@ -17,9 +17,12 @@ import (
 func Register(r *server.Hertz) {
 
 	root := r.Group("/", rootMw()...)
-	root.GET("/:code", append(_queryMw(), url_shorten.Query)...)
 	{
 		_api := root.Group("/api", _apiMw()...)
 		_api.POST("/create", append(_createshorturlMw(), url_shorten.CreateShortURL)...)
+	}
+	{
+		_s := root.Group("/s", _sMw()...)
+		_s.GET("/:code", append(_queryMw(), url_shorten.Query)...)
 	}
 }

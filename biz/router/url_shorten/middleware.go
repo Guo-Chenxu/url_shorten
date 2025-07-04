@@ -64,3 +64,8 @@ func _createshorturlMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _sMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
